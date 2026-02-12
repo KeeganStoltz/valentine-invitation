@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import Confetti from 'react-confetti'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import './index.css'
 
 // Detect if device is mobile
@@ -48,19 +48,26 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false)
   const mobile = useMemo(() => isMobile(), [])
   const confettiCount = mobile ? 150 : 250
+  const confettiTimerRef = useRef(null)
 
   const handleCardClick = () => {
     if (!isOpen) {
       setIsOpen(true)
       setShowConfetti(true)
       // Stop confetti after pieces have fallen
-      setTimeout(() => setShowConfetti(false), 10000)
+      confettiTimerRef.current = setTimeout(() => setShowConfetti(false), 10000)
     }
   }
 
   const handleCloseCard = (e) => {
     e.stopPropagation()
     setIsOpen(false)
+    setShowConfetti(false)
+    // Clear the confetti timer
+    if (confettiTimerRef.current) {
+      clearTimeout(confettiTimerRef.current)
+      confettiTimerRef.current = null
+    }
   }
 
   return (
@@ -72,7 +79,7 @@ function App() {
       </div>
       
       {/* Background hearts and roses */}
-      {!isOpen && <BackgroundElements />}
+      <BackgroundElements />
       
       {/* Confetti */}
       {showConfetti && (
@@ -87,15 +94,18 @@ function App() {
 
       {/* Valentine Card */}
       <div className="relative z-10 min-h-screen flex items-center justify-center p-2 sm:p-4">
-        <motion.div
-          className="relative cursor-pointer w-full max-w-sm sm:max-w-md md:max-w-lg"
-          onClick={handleCardClick}
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
+        <AnimatePresence mode="wait">
           {!isOpen ? (
             // Closed Card
+            <motion.div
+              key="closed"
+              className="relative cursor-pointer w-full max-w-sm sm:max-w-md md:max-w-lg"
+              onClick={handleCardClick}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+            >
             <motion.div
               className="w-full h-96 sm:h-[28rem] bg-gradient-to-br from-red-500 to-pink-500 rounded-2xl shadow-2xl flex items-center justify-center relative overflow-hidden"
               whileHover={{ scale: 1.05 }}
@@ -120,8 +130,17 @@ function App() {
               <div className="absolute top-4 right-4 sm:top-6 sm:right-6 text-2xl sm:text-4xl opacity-50">❤️</div>
               <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-2xl sm:text-4xl opacity-50">❤️</div>
             </motion.div>
+            </motion.div>
           ) : (
             // Opened Card
+            <motion.div
+              key="open"
+              className="relative w-full max-w-sm sm:max-w-md md:max-w-lg"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+            >
             <motion.div
               className="w-full bg-white rounded-2xl shadow-2xl p-6 sm:p-10 border-4 border-red-400"
               initial={{ rotateY: 0 }}
@@ -193,8 +212,9 @@ function App() {
                 </motion.div>
               </div>
             </motion.div>
+            </motion.div>
           )}
-        </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   )
