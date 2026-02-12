@@ -1,16 +1,52 @@
-# React + Vite
+# 💕 Valentine Invitation Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A beautiful, interactive Valentine's Day invitation website created with React and Tailwind CSS.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Interactive Card**: A stunning Valentine's card that opens when clicked
+- **Confetti Celebration**: 500 pieces of colorful confetti burst out when the card opens
+- **Animated Background**: 20 bouncing hearts and roses floating across the screen
+- **Smooth Animations**: Fluid animations powered by Framer Motion
+- **Personalized Message**: A heartfelt message from Keegan to Catherine
+- **Responsive Design**: Beautiful on all devices thanks to Tailwind CSS
 
-## React Compiler
+## 🚀 Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js 18+ 
+- npm or yarn
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## 🛠️ Tech Stack
+
+- **React 19** - Modern UI library
+- **Vite** - Fast build tool and dev server
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **Framer Motion** - Animation library
+- **React Confetti** - Confetti effects
+
+## 📦 Deployment
+
+This project is configured for GitHub Pages deployment. The automated workflow in `.github/workflows/deploy.yml` will build and deploy the site when changes are pushed to the main branch.
+
+## 💝 License
+
+This project is open source and available under the MIT License.
+

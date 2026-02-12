@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Confetti from 'react-confetti'
+// motion is used in JSX below but ESLint doesn't detect it
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion'
 import './App.css'
