@@ -1,7 +1,12 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Confetti from 'react-confetti'
 import { motion } from 'framer-motion'
 import './index.css'
+
+// Detect if device is mobile
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768
+}
 
 // Predefined floating elements for better performance (reduced to 15)
 const FLOATING_ELEMENTS = [
@@ -26,6 +31,8 @@ const FLOATING_ELEMENTS = [
 function App() {
   const [isOpen, setIsOpen] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
+  const mobile = useMemo(() => isMobile(), [])
+  const confettiCount = mobile ? 150 : 250
 
   const handleCardClick = () => {
     if (!isOpen) {
@@ -50,14 +57,14 @@ function App() {
       </div>
       
       {/* Background animated hearts and roses */}
-      <FloatingElements />
+      {!isOpen && <FloatingElements />}
       
       {/* Confetti */}
       {showConfetti && (
         <Confetti
           width={window.innerWidth}
           height={window.innerHeight}
-          numberOfPieces={250}
+          numberOfPieces={confettiCount}
           recycle={false}
           colors={['#ff0000', '#ff69b4', '#ff1493', '#ffc0cb', '#ffffff']}
         />
@@ -105,6 +112,11 @@ function App() {
               initial={{ rotateY: 0 }}
               animate={{ rotateY: 360 }}
               transition={{ duration: 0.8 }}
+              style={{ 
+                backfaceVisibility: 'hidden',
+                perspective: 1000,
+                transform: 'translateZ(0)'
+              }}
             >
               <div className="text-center">
                 <motion.div
@@ -176,12 +188,18 @@ function App() {
 // Component for floating hearts and roses
 function FloatingElements() {
   return (
-    <div className="fixed inset-0 pointer-events-none">
+    <div className="fixed inset-0 pointer-events-none" style={{ contain: 'layout style paint' }}>
       {FLOATING_ELEMENTS.map((element) => (
         <motion.div
           key={element.id}
           className={`absolute ${element.size} will-change-transform`}
-          style={{ left: `${element.x}%`, top: '-10%', opacity: element.opacity }}
+          style={{ 
+            left: `${element.x}%`, 
+            top: '-10%', 
+            opacity: element.opacity,
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden'
+          }}
           animate={{
             y: ['0vh', '110vh']
           }}

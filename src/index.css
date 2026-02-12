@@ -4,3 +4,22 @@ body {
   margin: 0;
   font-family: 'Georgia', 'Times New Roman', serif;
 }
+
+/* Performance optimizations for animations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Force GPU acceleration for motion elements */
+[class*="motion-"] {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize emoji rendering */
+.text-2xl, .text-3xl, .text-4xl, .text-5xl, .text-6xl, .text-7xl, .text-8xl, .text-9xl {
+  will-change: auto;
+  transform: translateZ(0);
+}
