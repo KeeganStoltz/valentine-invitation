@@ -8,23 +8,38 @@ const isMobile = () => {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768
 }
 
-// Predefined floating elements for better performance (reduced to 15)
-const FLOATING_ELEMENTS = [
-  { id: 0, emoji: '❤️', x: 8, delay: 0, duration: 12, size: 'text-2xl', opacity: 0.2 },
-  { id: 1, emoji: '🌹', x: 22, delay: 1.5, duration: 13, size: 'text-3xl', opacity: 0.25 },
-  { id: 2, emoji: '💕', x: 35, delay: 3, duration: 11, size: 'text-2xl', opacity: 0.18 },
-  { id: 3, emoji: '💖', x: 48, delay: 4.5, duration: 14, size: 'text-3xl', opacity: 0.22 },
-  { id: 4, emoji: '🌸', x: 62, delay: 6, duration: 12, size: 'text-2xl', opacity: 0.3 },
-  { id: 5, emoji: '❤️', x: 75, delay: 0.8, duration: 13, size: 'text-3xl', opacity: 0.17 },
-  { id: 6, emoji: '🌹', x: 88, delay: 2.3, duration: 11, size: 'text-2xl', opacity: 0.24 },
-  { id: 7, emoji: '💕', x: 15, delay: 3.8, duration: 14, size: 'text-3xl', opacity: 0.19 },
-  { id: 8, emoji: '💖', x: 42, delay: 5.3, duration: 12, size: 'text-2xl', opacity: 0.28 },
-  { id: 9, emoji: '🌸', x: 55, delay: 6.8, duration: 13, size: 'text-3xl', opacity: 0.21 },
-  { id: 10, emoji: '❤️', x: 68, delay: 1.2, duration: 11, size: 'text-2xl', opacity: 0.26 },
-  { id: 11, emoji: '🌹', x: 82, delay: 2.7, duration: 14, size: 'text-3xl', opacity: 0.16 },
-  { id: 12, emoji: '💕', x: 28, delay: 4.2, duration: 12, size: 'text-2xl', opacity: 0.23 },
-  { id: 13, emoji: '💖', x: 92, delay: 5.7, duration: 13, size: 'text-3xl', opacity: 0.33 },
-  { id: 14, emoji: '🌸', x: 5, delay: 7.2, duration: 11, size: 'text-2xl', opacity: 0.2 }
+// Static background elements distributed across the screen
+const BACKGROUND_ELEMENTS = [
+  { id: 0, emoji: '❤️', x: 5, y: 10, size: 'text-2xl', opacity: 0.15 },
+  { id: 1, emoji: '🌹', x: 15, y: 20, size: 'text-3xl', opacity: 0.2 },
+  { id: 2, emoji: '💕', x: 25, y: 15, size: 'text-2xl', opacity: 0.12 },
+  { id: 3, emoji: '💖', x: 35, y: 30, size: 'text-3xl', opacity: 0.18 },
+  { id: 4, emoji: '🌸', x: 45, y: 25, size: 'text-2xl', opacity: 0.25 },
+  { id: 5, emoji: '❤️', x: 55, y: 40, size: 'text-3xl', opacity: 0.14 },
+  { id: 6, emoji: '🌹', x: 65, y: 35, size: 'text-2xl', opacity: 0.2 },
+  { id: 7, emoji: '💕', x: 75, y: 50, size: 'text-3xl', opacity: 0.16 },
+  { id: 8, emoji: '💖', x: 85, y: 45, size: 'text-2xl', opacity: 0.22 },
+  { id: 9, emoji: '🌸', x: 95, y: 60, size: 'text-3xl', opacity: 0.18 },
+  { id: 10, emoji: '❤️', x: 10, y: 55, size: 'text-2xl', opacity: 0.2 },
+  { id: 11, emoji: '🌹', x: 20, y: 70, size: 'text-3xl', opacity: 0.13 },
+  { id: 12, emoji: '💕', x: 30, y: 65, size: 'text-2xl', opacity: 0.19 },
+  { id: 13, emoji: '💖', x: 40, y: 80, size: 'text-3xl', opacity: 0.28 },
+  { id: 14, emoji: '🌸', x: 50, y: 75, size: 'text-2xl', opacity: 0.17 },
+  { id: 15, emoji: '❤️', x: 60, y: 90, size: 'text-3xl', opacity: 0.21 },
+  { id: 16, emoji: '🌹', x: 70, y: 85, size: 'text-2xl', opacity: 0.15 },
+  { id: 17, emoji: '💕', x: 80, y: 18, size: 'text-3xl', opacity: 0.2 },
+  { id: 18, emoji: '💖', x: 90, y: 28, size: 'text-2xl', opacity: 0.24 },
+  { id: 19, emoji: '🌸', x: 8, y: 48, size: 'text-3xl', opacity: 0.16 },
+  { id: 20, emoji: '❤️', x: 18, y: 38, size: 'text-2xl', opacity: 0.23 },
+  { id: 21, emoji: '🌹', x: 28, y: 58, size: 'text-3xl', opacity: 0.19 },
+  { id: 22, emoji: '💕', x: 38, y: 68, size: 'text-2xl', opacity: 0.21 },
+  { id: 23, emoji: '💖', x: 48, y: 12, size: 'text-3xl', opacity: 0.17 },
+  { id: 24, emoji: '🌸', x: 58, y: 22, size: 'text-2xl', opacity: 0.26 },
+  { id: 25, emoji: '❤️', x: 68, y: 62, size: 'text-3xl', opacity: 0.14 },
+  { id: 26, emoji: '🌹', x: 78, y: 72, size: 'text-2xl', opacity: 0.18 },
+  { id: 27, emoji: '💕', x: 88, y: 82, size: 'text-3xl', opacity: 0.22 },
+  { id: 28, emoji: '💖', x: 92, y: 52, size: 'text-2xl', opacity: 0.15 },
+  { id: 29, emoji: '🌸', x: 12, y: 92, size: 'text-3xl', opacity: 0.2 }
 ]
 
 
@@ -56,8 +71,8 @@ function App() {
         <div className="absolute bottom-20 right-10 w-72 h-72 bg-red-300/15 rounded-full blur-2xl"></div>
       </div>
       
-      {/* Background animated hearts and roses */}
-      {!isOpen && <FloatingElements />}
+      {/* Background hearts and roses */}
+      {!isOpen && <BackgroundElements />}
       
       {/* Confetti */}
       {showConfetti && (
@@ -185,33 +200,22 @@ function App() {
   )
 }
 
-// Component for floating hearts and roses
-function FloatingElements() {
+// Component for static background hearts and roses
+function BackgroundElements() {
   return (
-    <div className="fixed inset-0 pointer-events-none" style={{ contain: 'layout style paint' }}>
-      {FLOATING_ELEMENTS.map((element) => (
-        <motion.div
+    <div className="fixed inset-0 pointer-events-none">
+      {BACKGROUND_ELEMENTS.map((element) => (
+        <div
           key={element.id}
-          className={`absolute ${element.size} will-change-transform`}
+          className={`absolute ${element.size}`}
           style={{ 
             left: `${element.x}%`, 
-            top: '-10%', 
-            opacity: element.opacity,
-            transform: 'translateZ(0)',
-            backfaceVisibility: 'hidden'
-          }}
-          animate={{
-            y: ['0vh', '110vh']
-          }}
-          transition={{
-            duration: element.duration,
-            delay: element.delay,
-            repeat: Infinity,
-            ease: "linear"
+            top: `${element.y}%`, 
+            opacity: element.opacity
           }}
         >
           {element.emoji}
-        </motion.div>
+        </div>
       ))}
     </div>
   )
