@@ -46,6 +46,8 @@ const BACKGROUND_ELEMENTS = [
 function App() {
   const [isOpen, setIsOpen] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
+  const [showDialog, setShowDialog] = useState(false)
+  const [dialogType, setDialogType] = useState('') // 'yes' or 'no'
   const mobile = useMemo(() => isMobile(), [])
   const confettiCount = mobile ? 150 : 250
   const confettiTimerRef = useRef(null)
@@ -67,6 +69,28 @@ function App() {
     if (confettiTimerRef.current) {
       clearTimeout(confettiTimerRef.current)
       confettiTimerRef.current = null
+    }
+  }
+
+  const handleYes = () => {
+    setDialogType('yes')
+    setShowDialog(true)
+  }
+
+  const handleNo = () => {
+    setDialogType('no')
+    setShowDialog(true)
+  }
+
+  const closeDialog = () => {
+    setShowDialog(false)
+    if (dialogType === 'yes') {
+      setIsOpen(false)
+      setShowConfetti(false)
+      if (confettiTimerRef.current) {
+        clearTimeout(confettiTimerRef.current)
+        confettiTimerRef.current = null
+      }
     }
   }
 
@@ -200,15 +224,26 @@ function App() {
                     Keegan
                   </p>
                   
-                  <motion.button
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.5 }}
-                    onClick={handleCloseCard}
-                    className="mt-6 px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors duration-200 text-sm sm:text-base font-medium"
+                  {/* Yes/No Buttons */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.6 }}
+                    className="mt-6 flex justify-center gap-4"
                   >
-                    Close Card
-                  </motion.button>
+                    <button
+                      onClick={handleYes}
+                      className="px-8 py-3 bg-pink-500 hover:bg-red-500 text-white rounded-full transition-colors duration-200 text-base sm:text-lg font-semibold shadow-lg"
+                    >
+                      Yes! 💕
+                    </button>
+                    <button
+                      onClick={handleNo}
+                      className="px-8 py-3 bg-pink-500 hover:bg-red-500 text-white rounded-full transition-colors duration-200 text-base sm:text-lg font-semibold shadow-lg"
+                    >
+                      No 😢
+                    </button>
+                  </motion.div>
                 </motion.div>
               </div>
             </motion.div>
@@ -216,6 +251,62 @@ function App() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Dialog Modal */}
+      <AnimatePresence>
+        {showDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+            onClick={closeDialog}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {dialogType === 'yes' ? (
+                <div className="text-center">
+                  <div className="text-6xl mb-4">🎉</div>
+                  <h2 className="text-3xl font-bold text-red-500 mb-4">
+                    Thank You!
+                  </h2>
+                  <p className="text-red-500 text-lg mb-6">
+                    You've made me the happiest person in the world! I promise not to disappoint you. 💕
+                  </p>
+                  <button
+                    onClick={closeDialog}
+                    className="px-6 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-full transition-colors duration-200 font-medium"
+                  >
+                    Close
+                  </button>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <div className="text-6xl mb-4">🤔</div>
+                  <h2 className="text-3xl font-bold text-red-500 mb-4">
+                    Oops!
+                  </h2>
+                  <p className="text-gray-700 text-lg mb-6">
+                    Sorry, did you mean to click "Yes"?
+                  </p>
+                  <button
+                    onClick={closeDialog}
+                    className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors duration-200 font-medium"
+                  >
+                    Let me try again
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
