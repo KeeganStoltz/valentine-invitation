@@ -1,7 +1,28 @@
 import { useState } from 'react'
 import Confetti from 'react-confetti'
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion'
 import './App.css'
+
+// Generate floating elements data once at module level
+const generateFloatingElements = () => {
+  const items = []
+  for (let i = 0; i < 20; i++) {
+    const isHeart = Math.random() > 0.5
+    items.push({
+      id: i,
+      emoji: isHeart ? '❤️' : '🌹',
+      x: Math.random() * 100,
+      delay: Math.random() * 5,
+      duration: 5 + Math.random() * 5,
+      size: isHeart ? 'text-2xl' : 'text-3xl'
+    })
+  }
+  return items
+}
+
+const FLOATING_ELEMENTS = generateFloatingElements()
+
 
 function App() {
   const [isOpen, setIsOpen] = useState(false)
@@ -134,25 +155,9 @@ function App() {
 
 // Component for floating hearts and roses
 function FloatingElements() {
-  const elements = []
-  
-  // Create 20 floating elements
-  for (let i = 0; i < 20; i++) {
-    const isHeart = Math.random() > 0.5
-    const element = {
-      id: i,
-      emoji: isHeart ? '❤️' : '🌹',
-      x: Math.random() * 100,
-      delay: Math.random() * 5,
-      duration: 5 + Math.random() * 5,
-      size: isHeart ? 'text-2xl' : 'text-3xl'
-    }
-    elements.push(element)
-  }
-  
   return (
     <div className="fixed inset-0 pointer-events-none">
-      {elements.map((element) => (
+      {FLOATING_ELEMENTS.map((element) => (
         <motion.div
           key={element.id}
           className={`absolute ${element.size} opacity-30`}
